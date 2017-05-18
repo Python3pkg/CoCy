@@ -129,7 +129,7 @@ class SSDPSender(BaseComponent):
    
     @handler("device_unavailable", channel="upnp")
     def _on_device_unavailable(self, event, upnp_device):
-        if self._timers.has_key(upnp_device.uuid):
+        if upnp_device.uuid in self._timers:
             self._timers[upnp_device.uuid].unregister()
             del self._timers[upnp_device.uuid]
         self._update_message_env(upnp_device)
@@ -227,7 +227,7 @@ class SSDPSender(BaseComponent):
         self.fireEvent(Write(to, headers))
                     
     def _get_template(self, name):
-        if self._template_cache.has_key(name):
+        if name in self._template_cache:
             return self._template_cache[name]
         template_file = open(os.path.join(self._template_dir, name))
         template = template_file.read()

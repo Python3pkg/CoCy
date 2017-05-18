@@ -341,7 +341,7 @@ class Application(object):
 
             return [self.__wsdl]
 
-        except Exception, e:
+        except Exception as e:
             logger.error(traceback.format_exc())
 
             # implementation hook
@@ -452,7 +452,7 @@ class Application(object):
                     try:
                         logger.debug(etree.tostring(etree.fromstring(body),
                                                              pretty_print=True))
-                    except etree.XMLSyntaxError,e:
+                    except etree.XMLSyntaxError as e:
                         logger.debug(body)
                         raise Fault('Client.XMLSyntax', 'Error at line: %d, col: %d'
                                                                     % e.position)
@@ -560,11 +560,11 @@ class Application(object):
             return [results_str]
 
         # The user issued a Fault, so handle it just like an exception!
-        except Fault, e:
+        except Fault as e:
             return self.__handle_fault(req_env, start_response,
                                                 http_resp_headers, service, e)
 
-        except Exception, e:
+        except Exception as e:
             fault = Fault('Server', str(e))
 
             return self.__handle_fault(req_env, start_response,

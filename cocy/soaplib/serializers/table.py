@@ -23,6 +23,7 @@ inheritance, it is supposedly buggy and possibly slow.
 """
 
 import logging
+import six
 logger = logging.getLogger(__name__)
 
 import sqlalchemy
@@ -76,6 +77,6 @@ class TableSerializerMeta(DeclarativeMeta):
 
         return DeclarativeMeta.__new__(cls, cls_name, cls_bases, cls_dict)
 
+@six.patch_with_metaclass(TableSerializerMeta)
 class TableSerializer(ClassSerializerBase):
-    __metaclass__ = TableSerializerMeta
     _decl_class_registry={}

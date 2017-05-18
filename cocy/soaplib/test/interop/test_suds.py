@@ -22,6 +22,7 @@ import unittest
 from suds.client import Client
 from suds import WebFault
 from datetime import datetime
+import six
 
 class TestSuds(unittest.TestCase):
     def setUp(self):
@@ -50,7 +51,7 @@ class TestSuds(unittest.TestCase):
         try:
             ret = self.client.service.non_nillable(non_nillable_class)
             raise Exception("must fail")
-        except WebFault, e:
+        except WebFault as e:
             pass
 
     def test_echo_integer_array(self):
@@ -67,14 +68,14 @@ class TestSuds(unittest.TestCase):
         ret = self.client.service.echo_in_header()
         self.client.set_options(soapheaders=None)
 
-        print ret
+        six.print_(ret)
 
         self.assertEquals(in_header.s, ret.s)
         self.assertEquals(in_header.i, ret.i)
 
     def test_send_out_header(self):
         out_header = self.client.factory.create('OutHeader')
-        out_header.dt = datetime(year=2000, month=01, day=01)
+        out_header.dt = datetime(year=2000, month=1, day=1)
         out_header.f = 3.141592653
 
         ret = self.client.service.send_out_header()
@@ -190,15 +191,15 @@ class TestSuds(unittest.TestCase):
         val.other.b = True
 
         val.p = self.client.factory.create("{hunk.sunk}NonNillableClass");
-        val.p.dt = datetime(2010,06,02)
+        val.p.dt = datetime(2010,6,2)
         val.p.i = 123
         val.p.s = "punk"
 
-        val.l = datetime(2010,07,02)
+        val.l = datetime(2010,7,2)
         val.q = 5
 
         ret = self.client.service.echo_extension_class(val)
-        print ret
+        six.print_(ret)
 
         self.assertEquals(ret.i, val.i)
         self.assertEquals(ret.s, val.s)

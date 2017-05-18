@@ -28,7 +28,7 @@ from circuits.core.utils import findroot, flatten
 from cocy.upnp.service import UPnPService
 from cocy.upnp.ssdp import SSDPTranceiver
 from cocy.providers import Provider
-import anydbm
+import dbm
 import os
 from xml.etree.ElementTree import Element, QName, SubElement
 from cocy.upnp import UPNP_CONTROL_NS
@@ -84,13 +84,13 @@ class UPnPDeviceServer(BaseComponent):
         try:
             # Some people encounter problems on some boxes when opening 
             # the db file
-            self._uuid_db = anydbm.open(os.path.join(path, 'upnp_uuids'), 'c')
+            self._uuid_db = dbm.open(os.path.join(path, 'upnp_uuids'), 'c')
         except:
             self.fire(Log(logging.WARN, "Could not determine type db type of "
                           + os.path.join(path, 'upnp_uuids')))
             try:
                 os.remove(os.path.join(path, 'upnp_uuids'))
-                self._uuid_db = anydbm.open \
+                self._uuid_db = dbm.open \
                     (os.path.join(path, 'upnp_uuids'), 'c')
             except:
                 self.fire(Log(logging.WARN, "Giving up on "

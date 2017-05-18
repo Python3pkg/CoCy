@@ -24,7 +24,7 @@ from circuits.web import Dispatcher
 from circuits.web.controllers import BaseController, expose
 from circuits.core.manager import Manager
 from unittest import TestCase
-from urllib2 import urlopen
+from six.moves.urllib.request import urlopen
 
 class Root(BaseController):
 

@@ -26,10 +26,11 @@ from cocy.upnp import UPNP_ROOTDEVICE, SSDP_DEVICE_SCHEMA
 from circuits_bricks.web import Client
 from circuits_bricks.core.timers import Timer
 from circuits.web.client import Request
-import httplib
+from six.moves import http_client
 from xml.etree.ElementTree import XML
-from urlparse import urljoin
+from six.moves.urllib.parse import urljoin
 from copy import copy
+from six.moves import filter
 
 class UPnPDeviceDirectory(BaseComponent):
 
@@ -46,8 +47,8 @@ class UPnPDeviceDirectory(BaseComponent):
     def _on_device_alive \
         (self, location, notification_type, max_age, server, usn):
         if notification_type == UPNP_ROOTDEVICE:
-            if not any(map(lambda c: isinstance(c, UPnPRootDevice) \
-                           and c.usn == usn, self.components.copy())):
+            if not any([isinstance(c, UPnPRootDevice) \
+                           and c.usn == usn for c in self.components.copy()]):
                 UPnPRootDevice(location, max_age, usn).register(self)
 
     def register(self, parent):
@@ -82,7 +83,7 @@ class UPnPRootDevice(BaseComponent):
         self._client = Client(location, channel=self._comm_chan).register(self)
         @handler("response", channel=self._comm_chan)
         def _on_response(self, response):
-            if response.status == httplib.OK:
+            if response.status == http_client.OK:
                 self._initialize(response.read())
         self.addHandler(_on_response)
         @handler("error", channel=self._comm_chan)

@@ -21,7 +21,7 @@
 from cocy.soaplib.soap import from_soap
 from xml.etree.ElementTree import ElementTree, Element, SubElement, QName
 import cocy.soaplib
-from StringIO import StringIO
+from six.moves.StringIO import StringIO
 
 def splitQTag (tag):
     tag_ns, tag_name = tag.split("}", 1)

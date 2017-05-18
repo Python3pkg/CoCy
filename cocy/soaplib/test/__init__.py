@@ -19,9 +19,9 @@
 
 import unittest
 
-import serializers
-import test_soap
-import test_service
+from . import serializers
+from . import test_soap
+from . import test_service
 
 def suite():
     suite = serializers.suite()

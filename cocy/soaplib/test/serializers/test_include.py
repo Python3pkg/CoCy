@@ -18,7 +18,7 @@
 #
 
 import unittest
-from urllib import quote_plus
+from six.moves.urllib.parse import quote_plus
 
 from lxml import etree
 

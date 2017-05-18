@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 from xml import etree
 
 from base64 import b64encode
-from urllib import unquote
+from six.moves.urllib.parse import unquote
 
 # import email data format related stuff
 try:
@@ -79,7 +79,7 @@ def from_soap(xml_string, http_charset):
     '''
     try:
         root, xmlids = etree.ElementTree.XMLID(xml_string.decode(http_charset))
-    except ValueError,e:
+    except ValueError as e:
         logger.debug('%s -- falling back to str decoding.' % (e))
         root, xmlids = etree.ElementTree.XMLID(xml_string)
 

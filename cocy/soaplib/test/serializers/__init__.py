@@ -19,9 +19,9 @@
 
 import unittest
 
-import test_binary
-import test_clazz
-import test_primitive
+from . import test_binary
+from . import test_clazz
+from . import test_primitive
 
 def suite():
     loader = unittest.TestLoader()

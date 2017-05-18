@@ -19,7 +19,7 @@
 # Adapted to standard etree implementation (mnl at mnl.de)
 
 import base64
-import cStringIO
+from six.moves import cStringIO
 
 from cocy.soaplib.serializers.base import Base
 from cocy.soaplib.serializers import nillable_value, nillable_element

@@ -17,10 +17,11 @@
 .. codeauthor:: mnl
 """
 import unittest
+import six
 
 class Test (unittest.TestCase):
     
     def test_print(self):
-        print "Hello Test"
+        six.print_("Hello Test")
         
 

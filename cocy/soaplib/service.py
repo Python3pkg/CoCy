@@ -26,6 +26,8 @@ from cocy.soaplib.serializers.clazz import TypeInfo
 from cocy.soaplib.util.odict import odict
 
 import logging
+from six.moves import zip
+import six
 logger = logging.getLogger(__name__)
 
 _pref_wsa = cocy.soaplib.prefmap[soaplib.ns_wsa]
@@ -45,11 +47,11 @@ def rpc(*params, **kparams):
             if '_method_descriptor' in kwargs:
                 # input message
                 def get_input_message(ns):
-                    _in_message = kparams.get('_in_message', f.func_name)
+                    _in_message = kparams.get('_in_message', f.__name__)
                     _in_variable_names = kparams.get('_in_variable_names', {})
 
-                    arg_count = f.func_code.co_argcount
-                    param_names = f.func_code.co_varnames[1:arg_count]
+                    arg_count = f.__code__.co_argcount
+                    param_names = f.__code__.co_varnames[1:arg_count]
 
                     try:
                         in_params = TypeInfo()
@@ -61,9 +63,9 @@ def rpc(*params, **kparams):
 
                             in_params[e0] = e1
 
-                    except IndexError, e:
+                    except IndexError as e:
                         raise Exception("%s has parameter numbers mismatching" %
-                                                                    f.func_name)
+                                                                    f.__name__)
 
                     message=Message.produce(type_name=_in_message, namespace=ns,
                                                             members=in_params)
@@ -75,14 +77,14 @@ def rpc(*params, **kparams):
                     _returns = kparams.get('_returns')
 
                     _out_message = kparams.get('_out_message', '%sResponse' %
-                                                                    f.func_name)
+                                                                    f.__name__)
 
                     kparams.get('_out_variable_name')
                     out_params = TypeInfo()
 
                     if _returns:
                         if isinstance(_returns, (list, tuple)):
-                            default_names = ['%sResult%d' % (f.func_name, i)
+                            default_names = ['%sResult%d' % (f.__name__, i)
                                                   for i in range(len(_returns))]
 
                             _out_variable_names = kparams.get(
@@ -95,7 +97,7 @@ def rpc(*params, **kparams):
 
                         else:
                             _out_variable_name = kparams.get(
-                                 '_out_variable_name', '%sResult' % f.func_name)
+                                 '_out_variable_name', '%sResult' % f.__name__)
 
                             out_params[_out_variable_name] = _returns
 
@@ -106,7 +108,7 @@ def rpc(*params, **kparams):
                     return message
 
                 _is_callback = kparams.get('_is_callback', False)
-                _public_name = kparams.get('_public_name', f.func_name)
+                _public_name = kparams.get('_public_name', f.__name__)
                 _is_async = kparams.get('_is_async', False)
                 if _is_async:
                     logger.warning("Async methods are not supported in this "
@@ -130,7 +132,7 @@ def rpc(*params, **kparams):
                     _out_header.resolve_namespace(_out_header, ns)
 
                 doc = getattr(f, '__doc__')
-                descriptor = MethodDescriptor(f.func_name, _public_name,
+                descriptor = MethodDescriptor(f.__name__, _public_name,
                         in_message, out_message, doc, _is_callback, _is_async,
                         _mtom, _in_header, _out_header)
 
@@ -140,7 +142,7 @@ def rpc(*params, **kparams):
 
         explain_method.__doc__ = f.__doc__
         explain_method._is_rpc = True
-        explain_method.func_name = f.func_name
+        explain_method.__name__ = f.__name__
 
         return explain_method
 
@@ -333,7 +335,7 @@ class DefinitionBase(object):
             if func_name == 'public_methods':
                 continue
             func = getattr(self, func_name)
-            if callable(func) and hasattr(func, '_is_rpc'):
+            if six.callable(func) and hasattr(func, '_is_rpc'):
                 descriptor = func(_method_descriptor=True, clazz=self.__class__)
                 public_methods.append(descriptor)
 

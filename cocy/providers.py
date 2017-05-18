@@ -25,6 +25,7 @@ from circuits.core.events import Event
 from circuits_bricks.app.logger import Log
 import logging
 from functools import wraps, update_wrapper
+import six
 
 class Manifest(object):
     """
@@ -94,6 +95,7 @@ class ProviderUpdated(Event):
     pass
 
     
+@six.patch_with_metaclass(ABCMeta)
 class Provider(BaseComponent):
     """
     All components that want to be advertised in the network as providers of 
@@ -105,7 +107,6 @@ class Provider(BaseComponent):
     - respond to ``provider_query`` events that are used to detect
       providers
     """    
-    __metaclass__ = ABCMeta
     
     def __init__(self, provider_manifest, **kwargs):
         """
@@ -190,12 +191,12 @@ def combine_events(f):
     return wrapper
         
 
+@six.patch_with_metaclass(ABCMeta)
 class BinarySwitch(Provider):
     """
     This class represents anything that has an on and
     an off state that is to be controlled remotely.
     """
-    __metaclass__ = ABCMeta
     
     channel = "binary_switch"
     
@@ -210,9 +211,8 @@ class BinarySwitch(Provider):
     def state(self, state):
         self._state = state
 
+@six.patch_with_metaclass(ABCMeta)
 class MediaPlayer(Provider):
-    __metaclass__ = ABCMeta
-    
     channel = "media_player"
 
     class EndOfMedia(Event):

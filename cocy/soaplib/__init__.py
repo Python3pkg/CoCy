@@ -1,3 +1,4 @@
+import six
 
 #
 # soaplib - Copyright (C) cocy.soaplib contributors.
@@ -58,7 +59,7 @@ def get_namespace_prefix(ns):
     assert ns != "__main__"
     assert ns != "soaplib.serializers.base"
 
-    assert (isinstance(ns, str) or isinstance(ns, unicode)), ns
+    assert (isinstance(ns, str) or isinstance(ns, six.text_type)), ns
 
     if not (ns in prefmap):
         pref = "s%d" % _ns_counter

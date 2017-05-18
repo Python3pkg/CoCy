@@ -32,6 +32,7 @@ from cocy.soaplib.serializers.primitive import String
 from cocy.soaplib import service
 from cocy.soaplib import wsgi
 from cocy.soaplib.service import rpc
+import six
 
 class Address(ClassSerializer):
     __namespace__ = "TestService"
@@ -151,7 +152,7 @@ class Test(unittest.TestCase):
         message.to_xml( ('a','b','c'), srv.get_tns(), sent_xml )
         sent_xml = sent_xml[0]
 
-        print etree.tostring(sent_xml, pretty_print=True)
+        six.print_(etree.tostring(sent_xml, pretty_print=True))
         response_data = message.from_xml(sent_xml)
 
         self.assertEquals(len(response_data), 3)

@@ -24,7 +24,7 @@ from time import time
 from circuits_bricks.core.timers import Timer
 from circuits.core.events import Event
 from circuits.core.handlers import handler
-from StringIO import StringIO
+from six.moves.StringIO import StringIO
 from xml.etree.ElementTree import Element, QName, ElementTree, SubElement
 from cocy.upnp import UPNP_AVT_EVENT_NS, UPNP_RCS_EVENT_NS
 from cocy import misc

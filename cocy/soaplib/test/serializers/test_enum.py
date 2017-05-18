@@ -19,6 +19,7 @@
 
 import unittest
 import cocy.soaplib
+import six
 _ns_xs = cocy.soaplib.ns_xsd
 _ns_xsi = cocy.soaplib.ns_xsi
 
@@ -60,8 +61,8 @@ class TestEnum(unittest.TestCase):
         elt = etree.fromstring(wsdl)
         simple_type = elt.xpath('//xs:simpleType', namespaces=soaplib.nsmap)[0]
 
-        print etree.tostring(elt, pretty_print=True)
-        print simple_type
+        six.print_(etree.tostring(elt, pretty_print=True))
+        six.print_(simple_type)
 
         self.assertEquals(simple_type.attrib['name'], 'DaysOfWeekEnum')
         self.assertEquals(simple_type[0].tag, "{%s}restriction" % cocy.soaplib.ns_xsd)
@@ -70,7 +71,7 @@ class TestEnum(unittest.TestCase):
     def test_serialize(self):
         DaysOfWeekEnum.resolve_namespace(DaysOfWeekEnum, 'punk')
         mo = DaysOfWeekEnum.Monday
-        print repr(mo)
+        six.print_(repr(mo))
 
         elt = etree.Element('test')
         DaysOfWeekEnum.to_xml(mo, 'test_namespace', elt)

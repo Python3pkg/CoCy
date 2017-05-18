@@ -27,6 +27,7 @@ from cocy.soaplib.serializers import nillable_element
 from cocy.soaplib.serializers import nillable_value
 
 from cocy.soaplib.util.odict import odict as TypeInfo
+import six
 
 class ClassSerializerMeta(type(Base)):
     '''
@@ -60,7 +61,7 @@ class ClassSerializerMeta(type(Base)):
                         if len(base_types) > 0 and issubclass(b, Base):
                             cls_dict["__extends__"] = extends = b
                     except:
-                        print extends
+                        six.print_(extends)
                         raise
 
         # populate soap members
@@ -299,6 +300,7 @@ class ClassSerializerBase(NonExtendingClass, Base):
 
         return ClassSerializerMeta(type_name, (ClassSerializer,), cls_dict)
 
+@six.patch_with_metaclass(ClassSerializerMeta)
 class ClassSerializer(ClassSerializerBase):
     """
     The general complexType factory. The __call__ method of this class will
@@ -307,8 +309,6 @@ class ClassSerializer(ClassSerializerBase):
     Those who'd like to customize the class should use the customize method.
     (see cocy.soaplib.serializers.base.Base)
     """
-
-    __metaclass__ = ClassSerializerMeta
 
 class Array(ClassSerializer):
     def __new__(cls, serializer, ** kwargs):

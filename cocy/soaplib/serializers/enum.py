@@ -1,10 +1,10 @@
 
 from lxml import etree
 
-from base import SimpleType
-from base import nillable_element
-from base import nillable_value
-from base import string_to_xml
+from .base import SimpleType
+from .base import nillable_element
+from .base import nillable_value
+from .base import string_to_xml
 
 import cocy.soaplib
 
@@ -66,7 +66,9 @@ def Enum(*values, **kwargs):
         def __repr__(self):
             return str(values[self.__value])
 
-    class EnumType(EnumBase):
+            def __bool__(self):
+            return self.__nonzero__()
+class EnumType(EnumBase):
         __type_name__ = type_name
 
         def __iter__(self):

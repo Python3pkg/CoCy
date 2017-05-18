@@ -26,6 +26,7 @@ from cocy.upnp import UPnPDeviceServer
 import os
 from circuits_bricks.app import Application
 from media_renderer.renderer import DummyPlayer
+import six
 
 CONFIG = {
     "logging": {
@@ -66,5 +67,5 @@ if __name__ == '__main__':
     media_renderer = DummyPlayer().register(application)
     
     from circuits.tools import graph
-    print graph(application)
+    six.print_(graph(application))
     application.run()

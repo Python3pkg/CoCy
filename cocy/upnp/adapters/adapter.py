@@ -31,12 +31,13 @@ from circuits_bricks.core.timers import Timer
 from circuits.core.events import Event
 from circuits.core.handlers import handler
 from inspect import getmembers, ismethod
-from StringIO import StringIO
+from six.moves.StringIO import StringIO
 from circuits_bricks.web.client import Client, Request
 from cocy.upnp.service import UPnPService
 from circuits_bricks.app.logger import Log
 import logging
 from cocy import misc
+import six
 
 class UPnPServiceError(Exception):
     
@@ -96,7 +97,7 @@ class UPnPDeviceAdapter(BaseComponent, Queryable):
         # It may turn out that no adapter can be constructed
         self.valid = False
         # Try to find a match UPnP info for the device 
-        for itf, props in self._mapping.iteritems():
+        for itf, props in six.iteritems(self._mapping):
             if isinstance(provider, itf):
                 self.valid = True
                 self._props = props
@@ -109,7 +110,7 @@ class UPnPDeviceAdapter(BaseComponent, Queryable):
         self._web_server_port = port
         # Get instance information about the provider
         manifest = provider.provider_manifest
-        if manifest.unique_id and uuid_map.has_key(manifest.unique_id):
+        if manifest.unique_id and manifest.unique_id in uuid_map:
             self._uuid = uuid_map[manifest.unique_id]
         else:
             self._uuid = str(uuid4())
@@ -123,7 +124,7 @@ class UPnPDeviceAdapter(BaseComponent, Queryable):
         self._services = set()
         service_insts = []
         for (service_type, service_id, controller) in self._props.services:
-            if not UPnPDeviceAdapter._service_registry.has_key(service_type):
+            if service_type not in UPnPDeviceAdapter._service_registry:
                 try:
                     service = UPnPService \
                         (config_id, service_type).register(self) \

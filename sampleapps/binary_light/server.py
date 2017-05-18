@@ -30,6 +30,7 @@ from circuits.web.servers import BaseServer
 from cocy.upnp import UPnPDeviceServer
 import os
 from circuits_bricks.app import Application
+import six
 
 CONFIG = {
     "logging": {
@@ -71,5 +72,5 @@ if __name__ == '__main__':
     BinaryLightPortlet(binary_light).register(portal)
     
     from circuits.tools import graph
-    print graph(application)
+    six.print_(graph(application))
     application.run()

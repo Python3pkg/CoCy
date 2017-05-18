@@ -19,7 +19,7 @@
 .. codeauthor:: mnl
 """
 
-from providers import Provider, BinarySwitch
+from .providers import Provider, BinarySwitch
 
 __version__ = "0.1.13"
 

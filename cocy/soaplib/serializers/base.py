@@ -21,6 +21,7 @@
 import cocy.soaplib
 
 from xml import etree
+import six
 
 def nillable_value(func):
     def wrapper(cls, value, tns, parent_elt, *args, **kwargs):
@@ -39,7 +40,7 @@ def nillable_element(func):
     return wrapper
 
 def string_to_xml(cls, value, tns, parent_elt, name):
-    assert isinstance(value, str) or isinstance(value, unicode), "'value' must " \
+    assert isinstance(value, str) or isinstance(value, six.text_type), "'value' must " \
                     "be string or unicode. it is instead '%s'" % repr(value)
 
     element = etree.ElementTree.SubElement(parent_elt, "{%s}%s" % (tns,name))

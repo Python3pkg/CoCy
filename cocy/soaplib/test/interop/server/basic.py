@@ -18,6 +18,7 @@
 #
 
 import logging
+import six
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger('soaplib.wsgi')
 logger.setLevel(logging.DEBUG)
@@ -34,4 +35,4 @@ if __name__ == '__main__':
         server.serve_forever()
 
     except ImportError:
-        print "Error: example server code requires Python >= 2.5"
+        six.print_("Error: example server code requires Python >= 2.5")

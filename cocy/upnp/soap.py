@@ -23,6 +23,7 @@ from circuits.core.events import Event
 from circuits.core.handlers import handler
 
 from soaplib.soap import from_soap
+import six
 
 class SOAPOperation(Event):
     """Soap Operation Event"""
@@ -69,7 +70,7 @@ class SOAP(BaseComponent):
                 soapAction = payload.tag
 
             for node in payload:
-                print node
+                six.print_(node)
 
             response.headers["Content-Type"] = "text/xml"
 

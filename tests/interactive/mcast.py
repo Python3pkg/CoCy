@@ -9,6 +9,7 @@ import time
 import struct
 import socket
 import sys
+import six
 
 def main():
     group = MYGROUP_6 if "-6" in sys.argv[1:] else MYGROUP_4
@@ -64,7 +65,7 @@ def receiver(group):
     while True:
         data, sender = s.recvfrom(1500)
         while data[-1:] == '\0': data = data[:-1] # Strip trailing \0's
-        print (str(sender) + '  ' + repr(data))
+        six.print_((str(sender) + '  ' + repr(data)))
 
 
 if __name__ == '__main__':
